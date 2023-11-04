@@ -3,6 +3,7 @@ package ownpli.v2.ownplicollector.scheduler.token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -22,18 +23,16 @@ import java.io.IOException;
 
 @Slf4j
 @Service
+@Component
 @Transactional
 @RequiredArgsConstructor
 public class TokenGenerator {
 
     private final ClientInformation client;
 
-    private final SpotifyApi spotifyApi = new SpotifyApi.Builder()
-            .setClientId(client.getClientId())
-            .setClientSecret(client.getClientSecret())
-            .build();
-
+    private SpotifyApi spotifyApi;
     public String accessToken() {
+        initializeSpotifyApi();
         ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
 
         try {
@@ -46,6 +45,13 @@ public class TokenGenerator {
             log.info("Error: " + e.getMessage());
             return "error";
         }
+    }
+
+    private void initializeSpotifyApi() {
+        spotifyApi = new SpotifyApi.Builder()
+                .setClientId(client.getClientId())
+                .setClientSecret(client.getClientSecret())
+                .build();
     }
 
 }
