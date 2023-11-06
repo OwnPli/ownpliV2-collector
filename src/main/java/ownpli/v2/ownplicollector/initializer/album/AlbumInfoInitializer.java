@@ -10,6 +10,7 @@ import com.neovisionaries.i18n.CountryCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
+import ownpli.v2.ownplicollector.dto.SpotifyToken;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
@@ -20,14 +21,18 @@ import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequ
 @RequiredArgsConstructor
 public class AlbumInfoInitializer {
 
+    private final SpotifyToken token;
+
     @PostConstruct
     public void searchAllAlbums() {
-        String q = "year:2020-2023";
+        String q = "year:2023";
         int offset = 0;
         int limit = 50; // 한 페이지에 표시할 앨범 수
 
+
+
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
-                .setAccessToken("YOUR_ACCESS_TOKEN_HERE") // 여기에 액세스 토큰을 설정
+                .setAccessToken(token.getToken()) // 여기에 액세스 토큰을 설정
                 .build();
 
         try {
