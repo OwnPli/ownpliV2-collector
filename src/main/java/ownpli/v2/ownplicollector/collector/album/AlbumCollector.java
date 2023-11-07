@@ -16,6 +16,7 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequest;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class AlbumCollector {
     private final SpotifyToken token;
 
     @PostConstruct
-    public void searchAllAlbums() {
+    public void searchAlbums() {
         String q = "year:2020-2023";
         int offset = 0;
         int limit = 50; // 한 페이지에 표시할 앨범 수
@@ -49,6 +50,8 @@ public class AlbumCollector {
                     log.info("Album: " + album.getName());
                     log.info("Artists: " + album.getArtists()[0].getName()); // 여기서는 첫 번째 아티스트만 출력
                     log.info("Release Date: " + album.getReleaseDate());
+                    log.info("Album ID: " + album.getId());
+                    log.info("-----------------------------------");
                 }
 
                 offset += limit; // 다음 페이지로 이동
