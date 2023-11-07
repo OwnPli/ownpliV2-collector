@@ -29,8 +29,6 @@ public class AlbumCollector {
         int offset = 0;
         int limit = 50; // 한 페이지에 표시할 앨범 수
 
-
-
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setAccessToken(token.getToken()) // 여기에 액세스 토큰을 설정
                 .build();
