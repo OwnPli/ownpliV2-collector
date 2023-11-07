@@ -1,4 +1,4 @@
-package ownpli.v2.ownplicollector.initializer.album;
+package ownpli.v2.ownplicollector.collector.album;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +19,13 @@ import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequ
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AlbumInfoInitializer {
+public class AlbumCollector {
 
     private final SpotifyToken token;
 
     @PostConstruct
     public void searchAllAlbums() {
-        String q = "year:2023";
+        String q = "year:2020-2023";
         int offset = 0;
         int limit = 50; // 한 페이지에 표시할 앨범 수
 
