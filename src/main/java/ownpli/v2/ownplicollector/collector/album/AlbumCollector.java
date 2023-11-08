@@ -1,6 +1,6 @@
 package ownpli.v2.ownplicollector.collector.album;
 
-import jakarta.annotation.PostConstruct;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -16,6 +16,8 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequest;
+
+import javax.annotation.PostConstruct;
 
 @Service
 @Slf4j

@@ -1,7 +1,7 @@
 package ownpli.v2.ownplicollector.collector.track;
 
 import com.neovisionaries.i18n.CountryCode;
-import jakarta.annotation.PostConstruct;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
@@ -13,6 +13,7 @@ import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequest;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Service
