@@ -4,7 +4,6 @@ import com.neovisionaries.i18n.CountryCode;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
 import ownpli.v2.ownplicollector.dto.SpotifyToken;
@@ -46,8 +45,11 @@ public class TrackCollector {
         try {
             Paging<Track> trackPaging;
             do {
+                String s = buildQuery();
+                System.out.println(s);
+                System.out.println("~~~~~~~~~~~~~");
                 SearchTracksRequest request = spotifyApi
-                        .searchTracks(buildQuery())
+                        .searchTracks(s)
                         .market(CountryCode.KR)
                         .limit(limit)
                         .offset(offset)
