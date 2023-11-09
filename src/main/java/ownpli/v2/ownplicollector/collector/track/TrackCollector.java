@@ -19,6 +19,7 @@ import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequ
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -73,8 +74,8 @@ public class TrackCollector {
 
     private String buildQuery() throws UnsupportedEncodingException {
         return Stream.of(year, artist, track, genre)
+                .filter(Objects::nonNull)
                 .map(this::encodeValue)
-                .filter(value -> !value.isEmpty())
                 .map(encodedValue -> ":" + encodedValue)
                 .collect(Collectors.joining(" "));
     }
