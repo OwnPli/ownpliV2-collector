@@ -6,8 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
+import ownpli.v2.ownplicollector.dto.QueryPrameter;
 import ownpli.v2.ownplicollector.dto.SpotifyToken;
-import ownpli.v2.ownplicollector.scheduler.token.TokenGenerator;
+
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
@@ -17,8 +18,7 @@ import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequ
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Objects;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,19 +72,14 @@ public class TrackCollector {
     }
 
     private String buildQuery() throws UnsupportedEncodingException {
-        return Stream.of(year, artist, track, genre)
-                .filter(Objects::nonNull)
-                .map(this::encodeValue)
-                .map(encodedValue -> ":" + encodedValue)
+        return Stream.of(
+                        QueryPrameter.of("year", year),
+                        QueryPrameter.of("artist", artist),
+                        QueryPrameter.of("track", track),
+                        QueryPrameter.of("genre" ,genre))
+                .filter(QueryPrameter::isNotNull)
+                .map(QueryPrameter::getQuery)
                 .collect(Collectors.joining(" "));
-    }
-
-    private String encodeValue(String value) {
-        try {
-            return URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
