@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ownpli.v2.ownplicollector.dto.SpotifyToken;
 import ownpli.v2.ownplicollector.scheduler.token.TokenGenerator;
 import se.michaelthelin.spotify.SpotifyApi;
@@ -22,6 +19,8 @@ import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequ
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Slf4j
@@ -33,20 +32,21 @@ public class TrackCollector {
     private String artist;
     private String track;
     private String genre;
-    SpotifyToken spotifyToken;
+    private SpotifyToken spotifyToken;
 
-    public void execute(){
+    public void execute() {
         int offset = 0;
         int limit = 50;
 
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setAccessToken(spotifyToken.getToken())
                 .build();
-        log.info("trackCollector token:"+spotifyToken.getToken());
+        log.info("trackCollector token:" + spotifyToken.getToken());
         try {
             Paging<Track> trackPaging;
             do {
-                SearchTracksRequest request = spotifyApi.searchTracks(buildQuery())
+                SearchTracksRequest request = spotifyApi
+                        .searchTracks(buildQuery())
                         .market(CountryCode.KR)
                         .limit(limit)
                         .offset(offset)
@@ -71,32 +71,20 @@ public class TrackCollector {
 
     }
 
+    private String buildQuery() throws UnsupportedEncodingException {
+        return Stream.of(year, artist, track, genre)
+                .map(this::encodeValue)
+                .filter(value -> !value.isEmpty())
+                .map(encodedValue -> ":" + encodedValue)
+                .collect(Collectors.joining(" "));
+    }
 
-    private String buildQuery() {
+    private String encodeValue(String value) {
         try {
-            StringBuilder queryBuilder = new StringBuilder();
-
-            if (year != null && !year.isEmpty()) {
-                String encodedYear = URLEncoder.encode(year, "UTF-8");
-                queryBuilder.append("year:").append(encodedYear).append(" ");
-            }
-            if (artist != null && !artist.isEmpty()) {
-                String encodedArtist = URLEncoder.encode(artist, "UTF-8");
-                queryBuilder.append("artist:").append(encodedArtist).append(" ");
-            }
-            if (track != null && !track.isEmpty()) {
-                String encodedTrack = URLEncoder.encode(track, "UTF-8");
-                queryBuilder.append("track:").append(encodedTrack).append(" ");
-            }
-            if (genre != null && !genre.isEmpty()) {
-                String encodedGenre = URLEncoder.encode(genre, "UTF-8");
-                queryBuilder.append("genre:").append(encodedGenre).append(" ");
-            }
-
-            return queryBuilder.toString().trim();
+            return URLEncoder.encode(value, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return "";
+            throw new RuntimeException(e);
         }
     }
+
 }
