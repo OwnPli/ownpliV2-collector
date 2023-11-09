@@ -45,11 +45,8 @@ public class TrackCollector {
         try {
             Paging<Track> trackPaging;
             do {
-                String s = buildQuery();
-                System.out.println(s);
-                System.out.println("~~~~~~~~~~~~~");
                 SearchTracksRequest request = spotifyApi
-                        .searchTracks(s)
+                        .searchTracks(buildQuery())
                         .market(CountryCode.KR)
                         .limit(limit)
                         .offset(offset)
