@@ -3,6 +3,8 @@ package ownpli.v2.ownplicollector.rabbitmq;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class RabbitProducer<T> implements Producer<T>{
     private final RabbitTemplate rabbitTemplate;
@@ -12,7 +14,7 @@ public class RabbitProducer<T> implements Producer<T>{
     }
 
     @Override
-    public void produce(String exchange, String routingKey, T message){
+    public void produce(String exchange, String routingKey, List<T> message){
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }
 
