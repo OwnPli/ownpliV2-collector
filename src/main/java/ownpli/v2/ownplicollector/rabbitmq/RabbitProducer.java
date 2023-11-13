@@ -4,14 +4,15 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitProducer {
+public class RabbitProducer<T> implements Producer<T>{
     private final RabbitTemplate rabbitTemplate;
 
     public RabbitProducer(RabbitTemplate rabbitTemplate){
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void produce(String exchange, String routingKey, String message){
+    @Override
+    public void produce(String exchange, String routingKey, T message){
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }
 

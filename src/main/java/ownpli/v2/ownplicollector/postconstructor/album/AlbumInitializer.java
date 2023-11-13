@@ -11,7 +11,6 @@ import ownpli.v2.ownplicollector.rabbitmq.RabbitProperties;
 @Service
 @RequiredArgsConstructor
 public class AlbumInitializer {
-    private final SpotifyToken token;
     private final RabbitProducer rabbitProducer;
     private final RabbitProperties rabbitProperties;
 
@@ -19,7 +18,6 @@ public class AlbumInitializer {
     public void init(){
         AlbumCollector albumCollector = AlbumCollector.builder()
                 .year("2020-2023")
-                .spotifyToken(token)
                 .build();
         albumCollector.execute();
 

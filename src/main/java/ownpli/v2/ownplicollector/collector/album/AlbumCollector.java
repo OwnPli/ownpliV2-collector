@@ -7,6 +7,7 @@ import lombok.Builder;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +23,7 @@ import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.requests.data.search.simplified.SearchAlbumsRequest;
 
 @Slf4j
-@Builder
+
 @AllArgsConstructor
 public class AlbumCollector {
 
@@ -33,6 +34,14 @@ public class AlbumCollector {
     private String album;
     private SpotifyToken spotifyToken;
 
+    @Builder
+    public AlbumCollector(String year, String artist, String track, String genre, String album) {
+        this.year = year;
+        this.artist = artist;
+        this.track = track;
+        this.genre = genre;
+        this.album = album;
+    }
 
     public void execute() {
         int offset = 0;

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ParseException;
+import ownpli.v2.ownplicollector.dto.Artist;
 import ownpli.v2.ownplicollector.dto.QueryPrameter;
 import ownpli.v2.ownplicollector.dto.SpotifyToken;
 
@@ -19,6 +20,7 @@ import se.michaelthelin.spotify.requests.data.search.simplified.SearchTracksRequ
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,6 +35,14 @@ public class TrackCollector {
     private String track;
     private String genre;
     private SpotifyToken spotifyToken;
+
+    @Builder
+    public TrackCollector(String year, String artist, String track, String genre) {
+        this.year = year;
+        this.artist = artist;
+        this.track = track;
+        this.genre = genre;
+    }
 
     public void execute() {
         int offset = 0;

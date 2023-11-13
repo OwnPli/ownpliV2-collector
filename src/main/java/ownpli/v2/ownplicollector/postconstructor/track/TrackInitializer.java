@@ -11,12 +11,11 @@ import javax.annotation.PostConstruct;
 @Service
 @RequiredArgsConstructor
 public class TrackInitializer {
-    private final SpotifyToken token;
+
     @PostConstruct
     public void init(){
         TrackCollector trackCollector = TrackCollector.builder()
                 .year("2020-2023")
-                .spotifyToken(token)
                 .build();
         trackCollector.execute();
     }
